@@ -1,0 +1,136 @@
+<odoo>
+  <data>
+
+    <record id="belenes_add_fields_users" model="ir.ui.view">
+        <field name="name">belenes_add_fields_users</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='in_group_10']" position="after">
+                <field name="valid_purchase"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="belenes_add_fields_on_purchase" model="ir.ui.view">
+        <field name="name">belenes_add_fields_on_purchase</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="id_active" invisible="1"/>
+                <field name="purchase_type"/>
+                <field name="valid_purchase" attrs="{'readonly': [('id_active','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="purchase_types">
+      <field name="name">Purchase types list</field>
+      <field name="model">purchase.order.types</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_purchase_types_form">
+      <field name="name">view_purchase_types_form</field>
+      <field name="model">purchase.order.types</field>
+      <field eval="2" name="priority"/>
+      <field name="arch" type="xml">
+        <form string="Tipos de compra" class="o_form_project_tasks">
+          <sheet string="Purchase Types">
+            <group string='Tipo de compra'>
+              <h4><field name="name"/></h4>
+            </group>
+            <notebook>
+              <page name="users_authorize" string="Usuarios que autorizan">
+                  <field name="userss" domain="[('valid_purchase','=',True)]"/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="purchase_types_window">
+      <field name="name">Tipos de compra</field>
+      <field name="res_model">purchase.order.types</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Tipos de Compras" id="menu_purchase_types" parent="purchase.menu_purchase_config"
+              action="purchase_types_window" sequence="101"/>
+
+    <record model="ir.actions.act_window" id="purchase_to_valid_window">
+      <field name="name">Compras pendientes por validar</field>
+      <field name="res_model">purchase.order</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <!--<field name="context">{'group_by':'id_active'}</field>-->
+      <field name="domain">[('valid_purchase', '=', False),('state','in',['draft','sent','to approve'])]</field>
+    </record>
+
+    <menuitem name="Compras por Validar" id="menu_purchase_to_valide" parent="purchase.menu_procurement_management"
+              action="purchase_to_valid_window"/>
+
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="belenes.list">
+      <field name="name">belenes list</field>
+      <field name="model">belenes.belenes</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="belenes.action_window">
+      <field name="name">belenes window</field>
+      <field name="res_model">belenes.belenes</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="belenes.action_server">
+      <field name="name">belenes server</field>
+      <field name="model_id" ref="model_belenes_belenes"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="belenes" id="belenes.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="belenes.menu_1" parent="belenes.menu_root"/>
+    <menuitem name="Menu 2" id="belenes.menu_2" parent="belenes.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="belenes.menu_1_list" parent="belenes.menu_1"
+              action="belenes.action_window"/>
+    <menuitem name="Server to list" id="belenes" parent="belenes.menu_2"
+              action="belenes.action_server"/>
+    -->
+  </data>
+</odoo>

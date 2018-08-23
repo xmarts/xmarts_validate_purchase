@@ -19,30 +19,11 @@ class purchaseTypes(models.Model):
     name = fields.Char(string='Tipo de compra', required=True)
     userss = fields.Many2many('res.users', string='Usuarios')
 
-
-class purchaseOrderSearch(models.Model):
-    _name = 'purchase.order.search'
-
-    name = fields.Char(string='Tipo de compra', compute="_search_purchases")
-
-    @api.one
-    def _search_purchases(self):
-        self.ensure_one()
-        action = {
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
-            'name': _('Compras Prueba'),
-            'res_model': 'purchase.order',
-            'domain': [('id', 'in', [1,2,3])],
-        }
-        return action
-
-
 class PurchaseOrder(models.Model):
     _name = 'purchase.order'
     _inherit = 'purchase.order'
 
-    valid_purchase = fields.Boolean(string='Validar Compra')
+    valid_purchase = fields.Boolean(string='Validar Compra',default=False)
     purchase_type = fields.Many2one('purchase.order.types', string='Tipo de Compra')
     #user_valid = fields.Many2one('res.users', string='Valido')
     id_active = fields.Boolean(default=False, compute='rev_users',string="Puede validar")
@@ -59,16 +40,22 @@ class PurchaseOrder(models.Model):
 
     @api.model
     def purchse_searchs(self):
-        raise exceptions.ValidationError('Necesita confirmación del pedido')
+        cr = self.env.cr
+        sql = "select po.id from purchase_order po inner join purchase_order_types pot on pot.id=po.purchase_type inner join purchase_order_types_res_users_rel potu on potu.purchase_order_types_id=pot.id where (po.valid_purchase=False or po.valid_purchase is null) AND potu.res_users_id='"+str(self.env.uid)+"'"
+        cr.execute(sql)
+        compras = cr.fetchall()
+        if compras==None:
+            raise exceptions.ValidationError('No tiene compras por validar')
 
-    @api.model
-    def purchse_search(self):
+        lista=[]
+        for l in compras:
+            lista.append(l[0])
         action = {
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
             'name': _('Compras Prueba'),
             'res_model': 'purchase.order',
-            'domain': ['&',('valid_purchase', '=', False),('id', 'in', [1,3,5,7])],
+            'domain': ['&',('valid_purchase', '=', False),('id', 'in', lista)],
         }
         return action
 

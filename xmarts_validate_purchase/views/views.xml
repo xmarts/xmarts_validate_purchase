@@ -64,18 +64,6 @@
     <menuitem name="Tipos de Compras" id="menu_purchase_types" parent="purchase.menu_purchase_config"
               action="purchase_types_window" sequence="101"/>
 
-    <record id="action_purchases_to_valid" model="ir.actions.server" >
-        <field name="name">Compras a validar</field>
-        <field name="model_id" ref="model_purchase_order"/>
-        <field name="state">code</field>
-        <field name="code">
-            action = model.purchse_search()
-        </field>
-    </record>
-
-    <menuitem name="Compras por Validar" id="menu_purchase_to_valide_p" parent="purchase.menu_procurement_management" action="action_purchases_to_valid" sequence="101"/>
-
-
     <record id="action_purchases_to_valids" model="ir.actions.server" >
         <field name="name">Compras a validar</field>
         <field name="model_id" ref="model_purchase_order"/>

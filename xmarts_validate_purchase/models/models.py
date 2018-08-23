@@ -20,6 +20,24 @@ class purchaseTypes(models.Model):
     userss = fields.Many2many('res.users', string='Usuarios')
 
 
+class purchaseOrderSearch(models.Model):
+    _name = 'purchase.order.search'
+
+    name = fields.Char(string='Tipo de compra', compute="_search_purchases")
+
+    @api.one
+    def _search_purchases(self):
+        self.ensure_one()
+        action = {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'name': _('Compras Prueba'),
+            'res_model': 'purchase.order',
+            'domain': [('id', 'in', [1,2,3])],
+        }
+        return action
+
+
 class PurchaseOrder(models.Model):
     _name = 'purchase.order'
     _inherit = 'purchase.order'
@@ -38,6 +56,21 @@ class PurchaseOrder(models.Model):
             self.id_active = True
         else:
             self.id_active = False
+
+    @api.model
+    def purchse_searchs(self):
+        raise exceptions.ValidationError('Necesita confirmación del pedido')
+
+    @api.model
+    def purchse_search(self):
+        action = {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree,form',
+            'name': _('Compras Prueba'),
+            'res_model': 'purchase.order',
+            'domain': ['&',('valid_purchase', '=', False),('id', 'in', [1,3,5,7])],
+        }
+        return action
 
     @api.one
     @api.multi

@@ -53,7 +53,7 @@ class PurchaseOrder(models.Model):
         action = {
             'type': 'ir.actions.act_window',
             'view_mode': 'tree,form',
-            'name': _('Compras Prueba'),
+            'name': _('Compras a validar'),
             'res_model': 'purchase.order',
             'domain': ['&',('valid_purchase', '=', False),('id', 'in', lista)],
         }

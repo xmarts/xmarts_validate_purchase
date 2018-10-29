@@ -3,7 +3,7 @@
 from odoo import models, fields, api, exceptions, _
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 from odoo.tools.misc import formatLang
-from odoo.addons.base.res.res_partner import WARNING_MESSAGE, WARNING_HELP
+#from odoo.addons.base.res.res_partner import WARNING_MESSAGE, WARNING_HELP
 
 
 class addPermission(models.Model):

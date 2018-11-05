@@ -6,6 +6,7 @@
         Add validation on purhase""",
 
     'description': """
+         - For odoo12
          - Add checkbox to validate if the user authorize purchase
          - Add model Purchase Type  
          - Add field Purchase type to purchase order

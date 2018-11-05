@@ -3,6 +3,7 @@
 from odoo import models, fields, api, exceptions, _
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 from odoo.tools.misc import formatLang
+from odoo.osv import osv 
 #from odoo.addons.base.res.res_partner import WARNING_MESSAGE, WARNING_HELP
 
 
@@ -63,8 +64,10 @@ class PurchaseOrder(models.Model):
     @api.multi
     def button_confirm(self):
         if self.valid_purchase == False:
-            raise exceptions.ValidationError('Necesita confirmación del pedido')
-
-        res = super(validPurchase, self).button_confirm()
-
+            #raise osv.except_osv(_("Warning"), _("La compra aun no ha sido validada \n ¿Desea continuar?"))
+            #raise exceptions.Warning('La compra aun no ha sido validada \n ¿Desea continuar?')
+            res = super(PurchaseOrder, self).button_confirm()
+            return res
+            #raise exceptions.ValidationError('Necesita confirmación del pedido')
+        res = super(PurchaseOrder, self).button_confirm()
         return res

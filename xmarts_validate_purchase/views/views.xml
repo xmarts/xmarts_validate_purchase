@@ -47,7 +47,12 @@
             </group>
             <notebook>
               <page name="users_authorize" string="Usuarios que autorizan">
-                  <field name="userss" domain="[('valid_purchase','=',True)]"/>
+                <field name="userss" nolabel="1" domain="[('valid_purchase','=',True)]">
+                    <tree string="Usuarios" editable="bottom">
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                    </tree>
+                </field>
               </page>
             </notebook>
           </sheet>
@@ -62,7 +67,7 @@
     </record>
 
     <menuitem name="Tipos de Compras" id="menu_purchase_types" parent="purchase.menu_purchase_config"
-              action="purchase_types_window" sequence="101"/>
+              action="purchase_types_window" sequence="66"/>
 
     <record id="action_purchases_to_valids" model="ir.actions.server" >
         <field name="name">Compras a validar</field>

@@ -71,3 +71,6 @@ class PurchaseOrder(models.Model):
             #raise exceptions.ValidationError('Necesita confirmación del pedido')
         res = super(PurchaseOrder, self).button_confirm()
         return res
+
+
+

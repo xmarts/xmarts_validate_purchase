@@ -1,1 +1,0 @@
-xmarts_validate_purchase
